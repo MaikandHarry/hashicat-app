@@ -66,7 +66,9 @@ resource "google_compute_instance" "hashicat" {
   tags = ["http-server"]
 
   labels = {
-    name = "hashicat"
+    name        = "hashicat",
+    environment = "production",
+    department  = "hashicat-social"
   }
 
 }
@@ -116,3 +118,11 @@ resource "null_resource" "configure-cat-app" {
     }
   }
 }
+
+  module "cloud-storage" {
+     source     = "terraform-google-modules/cloud-storage/google"
+     version    = "3.4.1"
+     names      = ["hashicat"]
+     prefix     = var.prefix
+     project_id = var.project
+  }
